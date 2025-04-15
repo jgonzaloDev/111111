@@ -87,5 +87,6 @@ jobs:
           package: .
 
       - name: Run Laravel migrations safely
-        run: | php artisan migrate --force || echo "Migración fallida, puede que ya esté aplicada"
+        run: |
+           php artisan migrate --force || echo "Migración fallida, puede que ya esté aplicada"
           
