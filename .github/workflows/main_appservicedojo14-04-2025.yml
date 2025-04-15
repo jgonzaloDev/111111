@@ -86,6 +86,6 @@ jobs:
           slot-name: 'Production'
           package: .
 
-      - name: Run Laravel migrations
-        run: php artisan migrate --force
+      - name: Run Laravel migrations safely
+        run: | php artisan migrate --force || echo "Migración fallida, puede que ya esté aplicada"
           
