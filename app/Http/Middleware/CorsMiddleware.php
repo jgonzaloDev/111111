@@ -15,7 +15,7 @@ class CorsMiddleware
     public function handle($request, Closure $next)
     {
         $headers = [
-            'Access-Control-Allow-Origin'      => 'https://gentle-sand-0130e6c0f.6.azurestaticapps.net',
+            'Access-Control-Allow-Origin'      => 'https://blue-meadow-0a64d5c0f.6.azurestaticapps.net',
             'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
             'Access-Control-Allow-Credentials' => 'true',
             'Access-Control-Max-Age'           => '86400',
