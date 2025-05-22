@@ -15,6 +15,7 @@ class CorsMiddleware
     public function handle($request, Closure $next)
     {
         $headers = [
+            'Access-Control-Allow-Origin'      => 'https://prueba1-h7gbhxdmbeeyfbf5.eastus2-01.azurewebsites.net',
             'Access-Control-Allow-Origin'      => 'https://blue-meadow-0a64d5c0f.6.azurestaticapps.net',
             'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
             'Access-Control-Allow-Credentials' => 'true',
