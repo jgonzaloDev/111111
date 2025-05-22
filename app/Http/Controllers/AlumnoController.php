@@ -6,8 +6,10 @@ use App\DTO\AlumnoDTO;
 use App\Models\Alumno;
 use App\Models\Nivel;
 use App\Services\AlumnoService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\TryCatch;
 
 class AlumnoController extends Controller
@@ -49,18 +51,16 @@ class AlumnoController extends Controller
     //         'nivel'=>'required'
     //     ]);
         try{
-            $alumnoDTO=new AlumnoDTO(0,$request->input('matricula'),$request->input('nombre'),$request->input('fecha_nacimiento'),
+            $alumnoDTO=new AlumnoDTO(0,$request->input('matricula'),$request->input('nombre'),Carbon::parse($request->input('fecha_nacimiento')),
             $request->input('telefono'),$request->input('email'),$request->input('nivel_id'));
-            $alumnoDTO->validate();
+            // $alumnoDTO->validate();
             return response()->json($this->alumnoService->create($alumnoDTO));
         }catch(Exception $e){
         }
     }
     
-}
 
-    
-    // public function update(Request $request, $id){
+    public function update(Request $request, $id){
     //     $request->validate([
     //         'matricula'=>'required|max:10|unique:alumnos,matricula,' . $id,
     //         'nombre'=>'required|max:255',
@@ -69,20 +69,21 @@ class AlumnoController extends Controller
     //         'email'=>'nullable|email',
     //         'nivel'=>'required'
     //     ]);
-    //     $alumno= Alumno::find($id);
-    //     $alumno->matricula=$request->input('matricula');
-    //     $alumno->nombre=$request->input('nombre');
-    //     $alumno->fecha_nacimiento=$request->input('fecha');
-    //     $alumno->telefono=$request->input('telefono');
-    //     $alumno->email=$request->input('email');
-    //     $alumno->nivel_id=$request->input('nivel');
-    //     $alumno->save();
-    //     return view('alumnos.message',['msg'=>'Registro modificado']);
-    // }
+        try{
+        $dto=new AlumnoDTO(0,$request->input('matricula'),$request->input('nombre'),Carbon::parse($request->input('fecha_nacimiento')),
+        $request->input('telefono'),$request->input('email'),$request->input('nivel_id'));    
+       
+        return response()->json($this->alumnoService->update($dto,$id));
+        }catch(Exception $e){
+            Log::error($e->getMessage()); // Registra el error en los logs
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
-    // public function destroy($id)
-    // {
-    //     $alumno=Alumno::find($id);
-    //     $alumno->delete();
-    //     return redirect('alumnos');
-    // }
+    public function delete($id){
+       try{
+        return $this->alumnoService->elimina($id);
+       }catch(Exception $e){
+       }
+    }
+}
