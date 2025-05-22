@@ -12,33 +12,27 @@ class CorsMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-public function handle($request, Closure $next)
-{
-    $allowedOrigins = [
-        'https://prueba1-h7ghbxdmbeeybf5.eastus2-01.azurestaticapps.net',
-    ];
+    public function handle($request, Closure $next)
+    {
+        $headers = [
+            'Access-Control-Allow-Origin'      => 'https://blue-meadow-0a64d5c0f.6.azurestaticapps.net',
+            'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
+            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Max-Age'           => '86400',
+            'Access-Control-Allow-Headers'     => 'Content-Type, Authorization, X-Requested-With'
+        ];
 
-    $origin = $request->headers->get('Origin');
+        if ($request->isMethod('OPTIONS'))
+        {
+            return response()->json('{"method":"OPTIONS"}', 200, $headers);
+        }
 
-    $headers = [
-        'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
-        'Access-Control-Allow-Credentials' => 'true',
-        'Access-Control-Max-Age'           => '86400',
-        'Access-Control-Allow-Headers'     => 'Content-Type, Authorization, X-Requested-With',
-    ];
+        $response = $next($request);
+        foreach($headers as $key => $value)
+        {
+            $response->header($key, $value);
+        }
 
-    if (in_array($origin, $allowedOrigins)) {
-        $headers['Access-Control-Allow-Origin'] = $origin;
+        return $response;
     }
-
-    if ($request->isMethod('OPTIONS')) {
-        return response()->json('{"method":"OPTIONS"}', 200, $headers);
-    }
-
-    $response = $next($request);
-    foreach ($headers as $key => $value) {
-        $response->header($key, $value);
-    }
-
-    return $response;
 }
