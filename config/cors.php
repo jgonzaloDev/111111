@@ -8,6 +8,7 @@ return [
 
     'allowed_origins' => [
         'https://prueba1-h7ghbxdmbeeybf5.eastus2-01.azurestaticapps.net',
+        'https://prueba1-h7ghbxdmbeeybf5.eastus2-01.azurewebsites.net',
     ],
 
     'allowed_origins_patterns' => [],
