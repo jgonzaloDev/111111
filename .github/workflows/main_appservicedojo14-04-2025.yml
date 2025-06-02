@@ -20,25 +20,24 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mbstring, pdo, sqlsrv, pdo_sqlsrv, openssl
+          extensions: mbstring, pdo, pdo_sqlsrv, openssl
 
       - name: Install composer dependencies
         run: composer install --no-dev --optimize-autoloader
 
-      - name: Create .env file
+      - name: Create .env file (sin credenciales sensibles)
         run: |
-          echo "APP_NAME=Laravel" >> .env
+          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
           echo "APP_ENV=production" >> .env
           echo "APP_DEBUG=false" >> .env
-          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
           echo "APP_URL=${{ secrets.APP_URL }}" >> .env
-
           echo "DB_CONNECTION=sqlsrv" >> .env
-          echo "DB_HOST=\${DB_HOST}" >> .env
           echo "DB_PORT=1433" >> .env
-          echo "DB_DATABASE=\${DB_DATABASE}" >> .env
-          echo "DB_USERNAME=\${BD_USERNAME}" >> .env
-          echo "DB_PASSWORD=\${BD_PASSWORD}" >> .env
+          # 👇 NO se incluyen DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+          # porque los inyecta Azure App Service desde Key Vault
+
+      - name: Generate Laravel APP key
+        run: php artisan key:generate --ansi
 
       - name: Set storage permissions
         run: chmod -R 775 storage bootstrap/cache
@@ -46,7 +45,7 @@ jobs:
       - name: Zip artifact for deployment
         run: zip release.zip . -r
 
-      - name: Upload artifact for deployment
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: php-app
@@ -86,5 +85,6 @@ jobs:
           slot-name: 'Production'
           package: .
 
-      - name: Run Laravel migrations
-        run: php artisan migrate --force || echo "Migración ya aplicada o sin cambios"
+      - name: Run Laravel migrations safely
+        run: |
+          php artisan migrate --force || echo "Migración fallida, puede que ya esté aplicada"
