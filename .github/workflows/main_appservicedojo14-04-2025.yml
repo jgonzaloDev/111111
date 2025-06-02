@@ -20,26 +20,31 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mbstring, pdo, sqlsrv, pdo_sqlsrv, openssl
+          extensions: mbstring, pdo, pdo_sqlsrv, openssl
 
       - name: Install composer dependencies
         run: composer install --no-dev --optimize-autoloader
 
-      - name: Create .env file using environment variables and Key Vault references
+      - name: Create .env file from secrets
         run: |
-          echo "APP_ENV=production" >> .env
-          echo "APP_DEBUG=false" >> .env
           echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
+          echo "APP_ENV=${{ secrets.APP_ENV }}" >> .env
+          echo "APP_DEBUG=${{ secrets.APP_DEBUG }}" >> .env
           echo "APP_URL=${{ secrets.APP_URL }}" >> .env
 
-          echo "DB_CONNECTION=sqlsrv" >> .env
-          echo "DB_HOST=\${DB_HOST}" >> .env
+          echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
           echo "DB_PORT=1433" >> .env
-          echo "DB_DATABASE=\${DB_DATABASE}" >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+
+          # 👇 Estas serán resueltas por el App Service desde Key Vault
           echo "DB_USERNAME=\${BD_USERNAME}" >> .env
           echo "DB_PASSWORD=\${BD_PASSWORD}" >> .env
 
-      - name: Set permissions for Laravel
+      - name: Generate Laravel APP key
+        run: php artisan key:generate --ansi
+
+      - name: Set storage permissions
         run: chmod -R 775 storage bootstrap/cache
 
       - name: Zip artifact for deployment
@@ -73,9 +78,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_8732D61D6DBE476D9CADB85EB165F48B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5E2F3F83A5BB4068AC82C81AA8EFCA37 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3E0413D16B324BD5B0052BA04E3733AA }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -85,5 +90,6 @@ jobs:
           slot-name: 'Production'
           package: .
 
-      - name: Run Laravel migrations (optional)
-        run: php artisan migrate --force || echo "Migración fallida o ya aplicada"
+      - name: Run Laravel migrations safely
+        run: |
+          php artisan migrate --force || echo "Migración fallida, puede que ya esté aplicada"
