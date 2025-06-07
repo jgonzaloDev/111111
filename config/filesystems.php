@@ -46,6 +46,14 @@ return [
             'throw' => false,
             'report' => false,
         ],
+    
+        'cloudfiles' => [
+            'driver' => 'azure',
+            'name' => env('AZURE_STORAGE_NAME'),
+            'key' => env('AZURE_STORAGE_KEY'),
+            'container' => env('AZURE_STORAGE_CONTAINER'),
+            'url' => env('AZURE_STORAGE_URL'), // opcional
+        ],
 
         's3' => [
             'driver' => 's3',
