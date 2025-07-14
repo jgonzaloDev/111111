@@ -8,7 +8,7 @@ return [
 
     'allowed_origins' => [
     
-        'https://front26-05-2025-dbhxhfe7aahpbqhd.eastus2-01.azurewebsites.net/',
+        'https://frontdojo-b2cqh8hseyega5e4.eastus2-01.azurewebsites.net',
         'https://prueba1-h7gbhxdmbeeyfbf5.eastus2-01.azurewebsites.net',
         'https://prueba1-h7gbhxdmbeeyfbf5.eastus2-01.azurestaticapps.net',
     ],
