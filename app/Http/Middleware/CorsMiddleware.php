@@ -16,7 +16,7 @@ class CorsMiddleware
     public function handle($request, Closure $next)
     {
         $allowedOrigins = [
-            'https://apibackenddojo.azurewebsites.net',
+            'https://frontdojo-b2cqh8hseyega5e4.eastus2-01.azurewebsites.net',
             'https://blue-meadow-0a64d5c0f.6.azurestaticapps.net',
         ];
 
