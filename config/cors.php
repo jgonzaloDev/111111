@@ -7,8 +7,6 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-
-    
         'https://appservicefront2-h4ezbgh5f9hjhmfh.eastus2-01.azurewebsites.net',
         'http://132.196.160.209/',
         'http://132.196.160.209',
