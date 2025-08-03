@@ -8,8 +8,8 @@ return [
 
     'allowed_origins' => [
         'https://appservicefront3-ejathhctfub8dbbw.eastus2-01.azurewebsites.net/',
-        'http://172.175.16.47/',
-        'http://172.175.16.47',
+        'https://172.175.16.47/',
+        'https://172.175.16.47',
         'https://prueba1-h7gbhxdmbeeyfbf5.eastus2-01.azurewebsites.net',
         'https://prueba1-h7gbhxdmbeeyfbf5.eastus2-01.azurestaticapps.net',
     ],
