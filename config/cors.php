@@ -9,6 +9,7 @@ return [
     'allowed_origins' => [
         'https://4.153.0.210',
         'https://app-dojo.com',
+        'https://api-backend-dojo.azurewebsites.net',  
     ],
 
     'allowed_origins_patterns' => [],
