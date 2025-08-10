@@ -8,7 +8,7 @@ return [
 
     'allowed_origins' => [
         'https://front22-f4acefazd0h3ggh5.eastus2-01.azurewebsites.net',
-        'https://172.175.16.47',
+        'https://4.153.0.210',
         'https://172.175.16.47',
         'https://prueba1-h7gbhxdmbeeyfbf5.eastus2-01.azurewebsites.net',
         'https://prueba1-h7gbhxdmbeeyfbf5.eastus2-01.azurestaticapps.net',
