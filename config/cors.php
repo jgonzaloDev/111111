@@ -7,7 +7,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://4.153.0.210',
+        'https://135.222.162.196',
         'https://app-dojo.com',
         'https://api-backend-dojo.azurewebsites.net',  
     ],
